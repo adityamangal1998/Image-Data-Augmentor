@@ -1,3 +1,15 @@
+import yaml
+
+
+def load_yaml_file(file_path):
+    try:
+        with open(file_path, 'r') as stream:
+            data = yaml.safe_load(stream)
+        return data
+    except:
+        return {}
+
+
 def check_directory(path):
     """
     Check Existing Path if present then delete the directory and create a new directory
@@ -20,6 +32,7 @@ def input_file_path_info(input_file=None):
     file_dir, file_name = ntpath.split(input_file)
     file_stem, file_extension = Path(file_name).stem, Path(file_name).suffix
     return {'file_dir': file_dir, 'file_name': file_name, 'file_stem': file_stem, 'file_extension': file_extension}
+
 
 # read annotation data from xml
 def read_xml_data(xml_file):

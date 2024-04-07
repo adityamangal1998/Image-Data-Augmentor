@@ -26,8 +26,8 @@
 
 <h1>To Do List</h1>
 <ul>
-<li>Concurrent Image Reader</li>
-<li>Concurrent Image Augmentor</li>
+<li>Integrate Data Iterator</li>
+<li>Add yolo and xml boxes augmenter</li>
 <li>Generative Adversarial Networks will be used to generate new samples of images</li>
 </ul>
 
