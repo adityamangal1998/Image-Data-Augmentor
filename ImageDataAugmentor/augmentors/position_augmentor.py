@@ -132,3 +132,37 @@ class PositionAugmentor:
         except Exception as e:
             print(f"Error : {e}")
             return image
+
+    def image_augmentor(self, image_data_aug, augmentation_config, file_names):
+        input_images = image_data_aug.original_images
+        output_images = []
+        for image_index, image in enumerate(input_images):
+            if 'scale' in augmentation_config:
+                scale_config = augmentation_config['saturation']
+                new_width = scale_config['new_width'] if scale_config.get('new_width') else config.new_width
+                new_height = scale_config['new_height'] if scale_config.get('new_height') else config.new_height
+                output_images.append(
+                    [self.saturation(image.copy(), saturation_factor=saturation_factor),
+                     file_names[image_index] + '_saturated_image'])
+            if 'crop' in augmentation_config:
+                brightness_config = augmentation_config['brightness']
+                brightness_factor = brightness_config['brightness_factor'] if brightness_config.get(
+                    'brightness_factor') else config.brightness_factor
+                output_images.append(
+                    [self.brightness(image.copy(), brightness_factor=brightness_factor),
+                     file_names[image_index] + 'brightened_image'])
+            if 'horizontal_flip' in augmentation_config:
+                blur_config = augmentation_config['blur']
+                blur_kernel_size = blur_config['kernel_size'] if blur_config.get(
+                    'kernel_size') else config.blur_kernel_size
+                output_images.append(
+                    [self.blur(image.copy(), kernel_size=blur_kernel_size), file_names[image_index] + 'blurred_image'])
+            if 'vertical_flip' in augmentation_config:
+                output_images.append([self.contrast(image.copy()), 'contrast_image'])
+            if 'rotate' in augmentation_config:
+                output_images.append([self.contrast(image.copy()), 'contrast_image'])
+            if 'x_translate' in augmentation_config:
+                output_images.append([self.contrast(image.copy()), 'contrast_image'])
+            if 'y_translate' in augmentation_config:
+                output_images.append([self.contrast(image.copy()), 'contrast_image'])
+        return output_images

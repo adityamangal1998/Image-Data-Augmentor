@@ -85,3 +85,39 @@ class NoiseAugmentor:
         shadow_mask = np.random.rand(*image.shape[:2]) < shadow_prob
         noisy_image[shadow_mask] = np.clip(image[shadow_mask] * 0.5, 0, 255)
         return noisy_image
+
+    def image_augmentor(self, image_data_aug, augmentation_config, file_names):
+        input_images = image_data_aug.original_images
+        output_images = []
+        for image_index, image in enumerate(input_images):
+            if 'gaussian_noise' in augmentation_config:
+                saturation_config = augmentation_config['saturation']
+                saturation_factor = saturation_config['saturation_factor'] if saturation_config.get(
+                    'saturation_factor') else config.saturation_factor
+                output_images.append(
+                    [self.saturation(image.copy(), saturation_factor=saturation_factor),
+                     file_names[image_index] + '_saturated_image'])
+            if 'salt_and_pepper_noise' in augmentation_config:
+                brightness_config = augmentation_config['brightness']
+                brightness_factor = brightness_config['brightness_factor'] if brightness_config.get(
+                    'brightness_factor') else config.brightness_factor
+                output_images.append(
+                    [self.brightness(image.copy(), brightness_factor=brightness_factor),
+                     file_names[image_index] + 'brightened_image'])
+            if 'speckle_noise' in augmentation_config:
+                blur_config = augmentation_config['blur']
+                blur_kernel_size = blur_config['kernel_size'] if blur_config.get(
+                    'kernel_size') else config.blur_kernel_size
+                output_images.append(
+                    [self.blur(image.copy(), kernel_size=blur_kernel_size), file_names[image_index] + 'blurred_image'])
+            if 'poisson_noise' in augmentation_config:
+                output_images.append([self.contrast(image.copy()), 'contrast_image'])
+            if 'periodic_noise' in augmentation_config:
+                output_images.append([self.contrast(image.copy()), 'contrast_image'])
+            if 'shadow_noise' in augmentation_config:
+                sharpness_config = augmentation_config['sharpness']
+                sharpness_kernel_size = np.array(sharpness_config['kernel']) if sharpness_config.get(
+                    'kernel') else config.sharpness_kernel
+                output_images.append([self.sharpness(image.copy(), kernel=sharpness_kernel_size),
+                                      file_names[image_index] + 'sharp_image'])
+        return output_images

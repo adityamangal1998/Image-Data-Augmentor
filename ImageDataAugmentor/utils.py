@@ -1,7 +1,19 @@
+import os
+import shutil
+
 import yaml
+import ntpath
+from pathlib import Path
+from functools import partial
+from concurrent.futures.thread import ThreadPoolExecutor
 
 
 def load_yaml_file(file_path):
+    """
+    Load YAML file
+    :param file_path: file path
+    :return: dict data
+    """
     try:
         with open(file_path, 'r') as stream:
             data = yaml.safe_load(stream)
@@ -36,6 +48,11 @@ def input_file_path_info(input_file=None):
 
 # read annotation data from xml
 def read_xml_data(xml_file):
+    """
+
+    :param xml_file:
+    :return:
+    """
     file = open(xml_file, 'r')
     tree = ET.parse(file)
     root = tree.getroot()
@@ -54,6 +71,13 @@ def read_xml_data(xml_file):
 
 def xml_to_yolo(bbox, w, h):
     """
+
+    :param bbox:
+    :param w:
+    :param h:
+    :return:
+    """
+    """
     Yolo coordinates are calculated by normalizing the Bounding Box coordinates.
     It is important to know the Width and Height of the image whose normalized coordinates are to be calculated
     for YOLO format.
@@ -67,6 +91,13 @@ def xml_to_yolo(bbox, w, h):
 
 
 def rotateYoloBB(rotate_image, xml_data, angle=135):
+    """
+
+    :param rotate_image:
+    :param xml_data:
+    :param angle:
+    :return:
+    """
     """
     This function focuses on finding the new coordinates of the BB after Image Rotation.
     """
@@ -133,6 +164,13 @@ def rotateYoloBB(rotate_image, xml_data, angle=135):
 
 def cv_to_yolo(image_bboxes, ht, wd):
     """
+
+    :param image_bboxes:
+    :param ht:
+    :param wd:
+    :return:
+    """
+    """
     This function works similar to the above xml_to_yolo(). The only point of difference is the bbox size.
     main_bbox = The BB coords along with the index is passed. This is the output of the rotated images.
     """
@@ -151,6 +189,12 @@ def cv_to_yolo(image_bboxes, ht, wd):
 
 
 def save_yolo_boxes(output_path, yolo_boxes):
+    """
+
+    :param output_path:
+    :param yolo_boxes:
+    :return:
+    """
     res = []
     for i, yolo_bbox in enumerate(yolo_boxes):
         # convert data to string
@@ -158,3 +202,22 @@ def save_yolo_boxes(output_path, yolo_boxes):
         res.append(f"{bbox_string}")
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(res))
+
+
+def process_data_with_multi_threading(calling_function_object, function_arguments, list_data, num_threads=3):
+    """
+    Process Data with Multi-Threading
+    :param calling_function_object: calling function object
+    :param function_arguments: function arguments
+    :param list_data: list
+    :param num_threads: number of threads
+    :return:
+    """
+    try:
+        calling_function = partial(calling_function_object, function_arguments)
+        with ThreadPoolExecutor(max_workers=num_threads) as executor:
+            result = list(executor.map(calling_function, list_data))
+        return result
+    except Exception as e:
+        print(f"Error : {e}")
+        return []

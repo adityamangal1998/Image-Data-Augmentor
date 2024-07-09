@@ -1,0 +1,1 @@
+image_file_type = 'jpg'
