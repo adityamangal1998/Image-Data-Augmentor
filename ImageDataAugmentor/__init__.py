@@ -1,6 +1,6 @@
 from .image_data_augmentation import ImageDataAugmentation
 
-__version__ = "0.0.10"
+__version__ = "1.0.0"
 __author__ = 'Aditya Mangal'
 __credits__ = 'Aditya Mangal'
 
