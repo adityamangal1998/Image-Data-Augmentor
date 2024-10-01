@@ -102,7 +102,10 @@ class ImageDataAugmentation:
             output_images.extend(self.noise_augmented_images)
 
         if is_save_image:
+            if output_dir is None:
+                output_dir = 'output'
             for output_image in output_images:
                 cv2.imwrite(os.path.join(output_dir, output_image[-1]), output_image[0])
+            return "Augmented Images Saved Successfully"
         else:
             return output_images

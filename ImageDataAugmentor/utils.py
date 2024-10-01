@@ -173,7 +173,7 @@ def cv_to_yolo(image_bboxes, ht, wd):
     """
     """
     This function works similar to the above xml_to_yolo(). The only point of difference is the bbox size.
-    main_bbox = The BB coords along with the index is passed. This is the output of the rotated images.
+    main_bbox = The BB cords along with the index is passed. This is the output of the rotated images.
     """
     yolo_boxes = []
     for main_bbox in image_bboxes:
