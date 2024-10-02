@@ -25,6 +25,12 @@
 <pre><code>pip install ImageDataAugmenter
 </code></pre>
 
+<h1>Usage</h1>
+<pre><code>from ImageDataAugmentor import ImageDataAugmentation as IDA
+
+image_data_augmentor = IDA()
+output = image_data_augmentor.data_augmentation(image_dir_path='input', configuration_file_path='config.yaml')
+</code></pre>
 
 <h1>To Do List</h1>
 <ul>
