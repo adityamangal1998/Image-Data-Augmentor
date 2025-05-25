@@ -61,7 +61,17 @@ class ImageDataAugmentation:
         :param file_type:
         :return:
         """
+        if not os.path.exists(configuration_file_path):
+            # Resolve the path relative to the script's directory
+            script_dir = os.path.dirname(__file__)
+            resolved_path = os.path.join(script_dir, configuration_file_path)
+            print(f"Configuration file not found at '{configuration_file_path}'. Trying to resolve to '{resolved_path}'")
+            if os.path.exists(resolved_path):
+                configuration_file_path = resolved_path
+            else:
+                raise FileNotFoundError(f"Configuration file '{configuration_file_path}' not found. Please provide a valid path.")
         configuration_data = utils.load_yaml_file(configuration_file_path)
+        print("Configuration Data: ", configuration_data)
         image_file_type = configuration_data['file_type'] if configuration_data.get(
             'file_type') else config.image_file_type
         if image_dir_path is not None:
@@ -104,8 +114,9 @@ class ImageDataAugmentation:
         if is_save_image:
             if output_dir is None:
                 output_dir = 'output'
+            utils.check_and_create_directory(output_dir)
             for output_image in output_images:
                 cv2.imwrite(os.path.join(output_dir, output_image[-1]), output_image[0])
-            return "Augmented Images Saved Successfully"
+            return output_images
         else:
             return output_images

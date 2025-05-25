@@ -16,7 +16,8 @@ setup(
     install_requires=['opencv-python>=4.5',
                       'numpy>=1.17',
                       'future>=0.17',
-                      'glob2>=0.7'
+                      'glob2>=0.7',
+                      'ConcurrentImageRead>=0.0.10'
                       ],
 
     classifiers=[

@@ -222,3 +222,14 @@ def process_data_with_multi_threading(calling_function_object, function_argument
     except Exception as e:
         print(f"Error : {e}")
         return []
+
+def check_and_create_directory(path):
+    """
+    Check if directory exists, if not create it
+    :param path: directory path
+    :return: None
+    """
+    if not os.path.exists(path):
+        os.makedirs(path)
+    else:
+        print(f"Directory {path} already exists.")

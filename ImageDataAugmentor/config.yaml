@@ -1,0 +1,52 @@
+image_file_type: jpg
+augmentation_types:
+  color_augmentation:
+    saturation:
+      saturation_factor: 1.5
+    brightness:
+      brightness_factor: 1.5
+    blur:
+      kernel_size: [5, 5]
+    contrast: True
+    sharpness:
+      kernel: [[0, -1, 0], [-1, 5, -1], [0, -1, 0]]
+  position_augmentation:
+    scale:
+      # we can pass height and width separately or scale factor
+      new_width: 300
+      new_height: 300
+#      scale_factor: 1.2
+    crop:
+      is_center_crop: True
+#      crop_width: 100
+#      crop_height: 100
+      x_start: None
+      x_end: None
+      y_start: None
+      y_end: None
+    horizontal_flip: True
+    vertical_flip: True
+    vertical_and_horizontal_flip: True
+    rotate:
+      angle: 90
+    x_translate:
+      x_translate_value: 50
+    y_translate:
+      y_translate_value: 50
+    xy_translate:
+      x_translate_value: 50
+      y_translate_value: 50
+  noise_augmentation:
+    gaussian_noise:
+      mean: 0
+      std: 25
+    salt_and_pepper_noise:
+      salt_prob: 0.02
+      pepper_prob: 0.02
+    speckle_noise:
+      scale: 0.1
+    poisson_noise: True
+    periodic_noise:
+      frequency: 10
+    shadow_noise:
+      shadow_prob: 0.1
